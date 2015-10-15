@@ -3,12 +3,10 @@ package com.tagdish.test;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.search.SearchHit;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.tagdish.dao.elasticsearch.impl.ZipCodeQuery;
+import com.tagdish.dao.elasticsearch.ZipCodeQueryDSL;
 import com.tagdish.dao.repository.DishRepository;
 import com.tagdish.dao.repository.RestaurantRepository;
 import com.tagdish.dao.repository.ZipCodeRepository;
@@ -185,18 +183,6 @@ public class TestApplication {
 		
     	System.out.println(applicationContext.getBean(ZipCodeRepository.class).findByCityAndState("LAGRANGEVILLE", "NY").get(0).getZipCode());
 		System.out.println(applicationContext.getBean(DishRepository.class).findByDishId(1l).getDishName());
-		System.out.println(applicationContext.getBean(ZipCodeQuery.class).getZipCode(90503l).getHits().getHits().length);
-		
-		SearchResponse response = applicationContext.getBean(ZipCodeQuery.class).getZipCode(90503l);
-		for(SearchHit searchHit : response.getHits()){
-			if(response.getHits().getHits().length <= 0) {
-				System.out.println("Nothing found");
-			}
-			
-			System.out.println(searchHit.getId());
-			System.out.println((String)searchHit.getSource().get("zipClass"));
-			System.out.println((String)searchHit.getSource().get("city"));
-			
-			}
+		System.out.println(applicationContext.getBean(ZipCodeQueryDSL.class).getZipCode(90503l).getCity());
 	}
 }
