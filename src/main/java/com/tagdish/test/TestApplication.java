@@ -1,18 +1,25 @@
 package com.tagdish.test;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import com.tagdish.constant.TagDishDomainConstant;
 import com.tagdish.dao.elasticsearch.ZipCodeQueryDSL;
+import com.tagdish.dao.jdbc.DishDAO;
+import com.tagdish.dao.jdbc.NotificationDAO;
 import com.tagdish.dao.repository.DishRepository;
 import com.tagdish.dao.repository.RestaurantRepository;
 import com.tagdish.dao.repository.ZipCodeRepository;
+import com.tagdish.domain.db.NotificationDB;
 import com.tagdish.domain.elasticsearch.Dish;
 import com.tagdish.domain.elasticsearch.Restaurant;
 import com.tagdish.domain.location.Address;
+import com.tagdish.exception.DBException;
 
 public class TestApplication {
 	
@@ -177,12 +184,22 @@ public class TestApplication {
     }
 	
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws BeansException, DBException {
 		
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
 		
     	System.out.println(applicationContext.getBean(ZipCodeRepository.class).findByCityAndState("LAGRANGEVILLE", "NY").get(0).getZipCode());
 		System.out.println(applicationContext.getBean(DishRepository.class).findByDishId(1l).getDishName());
 		System.out.println(applicationContext.getBean(ZipCodeQueryDSL.class).getZipCode(90503l).getCity());
+		System.out.println(applicationContext.getBean(DishDAO.class).listDish().size());
+		
+		NotificationDB notificationDB = new NotificationDB();
+		notificationDB.setAction(TagDishDomainConstant.VIEW_DISH_DETAIL_NOTIFY_TYPE);
+		notificationDB.setData("1");
+		notificationDB.setTrasactionId("abc");
+		notificationDB.setNotificationId(1l);
+		notificationDB.setCount(2);
+		notificationDB.setTimestamp(System.currentTimeMillis());
+		applicationContext.getBean(NotificationDAO.class).updateNotification(notificationDB);
 	}
 }

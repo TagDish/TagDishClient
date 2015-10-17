@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import com.google.gson.Gson;
+import com.tagdish.constant.TagDishDomainConstant;
 import com.tagdish.domain.dto.DishDTO;
 import com.tagdish.domain.dto.MessageDTO;
+import com.tagdish.domain.dto.NotificationDTO;
 import com.tagdish.domain.dto.RestaurantDTO;
 import com.tagdish.domain.dto.RestaurantDishDTO;
 import com.tagdish.domain.dto.search.SearchResultDTO;
@@ -14,6 +16,18 @@ import com.tagdish.domain.elasticsearch.Restaurant;
 import com.tagdish.domain.location.Address;
 
 public class TestTagDishJsonBuilder {	
+	
+	public static void main(String[] args) {
+		 
+		NotificationDTO n = new NotificationDTO();
+		n.setAction(TagDishDomainConstant.VIEW_DISH_DETAIL_NOTIFY_TYPE);
+		n.setEntityId("1");
+		n.setTimestamp(System.currentTimeMillis());
+		n.setTrasactionId("abc");
+		
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(n));
+	}
 	public static void mainDish(String[] args) {
 		
 		Dish dish = new Dish();
@@ -152,7 +166,7 @@ public class TestTagDishJsonBuilder {
 		
 	}
 	
-	public static void main(String[] args) {
+	public static void mainMessageDTO(String[] args) {
 		
 		MessageDTO msg = new MessageDTO("No Entity Found", "Error");
 		Gson gson = new Gson();
