@@ -191,15 +191,16 @@ public class TestApplication {
 		System.out.println(applicationContext.getBean(ZipCodeQueryDSL.class).getZipCode(90503l).getCity());
 		System.out.println(applicationContext.getBean(DishDAO.class).listDish().size());
 		
-		ArrayList<Long> zipCodeList = new ArrayList<Long>();
-		zipCodeList.add(90503l);
-		zipCodeList.add(90505l);
+		long[] zipCodeArray = new long[2];
+		zipCodeArray[0] = 90503l;
+		zipCodeArray[1] = 90505l;
+		
+		System.out.println(applicationContext.getBean(DishSearchQueryDSL.class).fuzzySearchDish("Paneer", zipCodeArray).get(0).getDishName());
 		
 		ArrayList<String> zipCodeStrList = new ArrayList<String>();
 		zipCodeStrList.add("90503");
 		zipCodeStrList.add("90505");		
 		
-		System.out.println(applicationContext.getBean(DishSearchQueryDSL.class).fuzzySearchDish("Paneer", zipCodeList).get(0).getDishName());
 		System.out.println("Using the method findByDishNameContainingAndZipCodeIn");
 		System.out.println(applicationContext.getBean(DishSearchRepository.class).findByDishNameContainingAndZipCodeIn("Paneer", zipCodeStrList).get(0).getDishName());
 		
