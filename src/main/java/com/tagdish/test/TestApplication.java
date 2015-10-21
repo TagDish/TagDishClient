@@ -1,6 +1,5 @@
 package com.tagdish.test;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,15 +7,13 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import com.tagdish.constant.TagDishDomainConstant;
 import com.tagdish.dao.elasticsearch.DishSearchQueryDSL;
 import com.tagdish.dao.elasticsearch.ZipCodeQueryDSL;
 import com.tagdish.dao.jdbc.DishDAO;
-import com.tagdish.dao.jdbc.NotificationDAO;
 import com.tagdish.dao.repository.DishRepository;
+import com.tagdish.dao.repository.DishSearchRepository;
 import com.tagdish.dao.repository.RestaurantRepository;
 import com.tagdish.dao.repository.ZipCodeRepository;
-import com.tagdish.domain.db.NotificationDB;
 import com.tagdish.domain.elasticsearch.Dish;
 import com.tagdish.domain.elasticsearch.Restaurant;
 import com.tagdish.domain.location.Address;
@@ -187,7 +184,7 @@ public class TestApplication {
 
 	public static void main(String[] args) throws BeansException, DBException {
 		
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext("/application-context.xml");
 		
     	System.out.println(applicationContext.getBean(ZipCodeRepository.class).findByCityAndState("LAGRANGEVILLE", "NY").get(0).getZipCode());
 		System.out.println(applicationContext.getBean(DishRepository.class).findByDishId(1l).getDishName());
@@ -198,8 +195,16 @@ public class TestApplication {
 		zipCodeList.add(90503l);
 		zipCodeList.add(90505l);
 		
-		System.out.println(applicationContext.getBean(DishSearchQueryDSL.class).fuzzySearchDish("Paneer", zipCodeList).get(0).getDishName());
+		ArrayList<String> zipCodeStrList = new ArrayList<String>();
+		zipCodeStrList.add("90503");
+		zipCodeStrList.add("90505");		
 		
+		System.out.println(applicationContext.getBean(DishSearchQueryDSL.class).fuzzySearchDish("Paneer", zipCodeList).get(0).getDishName());
+		System.out.println("Using the method findByDishNameContainingAndZipCodeIn");
+		System.out.println(applicationContext.getBean(DishSearchRepository.class).findByDishNameContainingAndZipCodeIn("Paneer", zipCodeStrList).get(0).getDishName());
+		
+		System.out.println("Using the method findByDishNameLikeAndZipCodeIn");
+		System.out.println(applicationContext.getBean(DishSearchRepository.class).findByDishNameLikeAndZipCodeIn("Paneer", zipCodeStrList).get(0).getDishName());
 //		NotificationDB notificationDB = new NotificationDB();
 //		notificationDB.setAction(TagDishDomainConstant.VIEW_DISH_DETAIL_NOTIFY_TYPE);
 //		notificationDB.setData("1");
@@ -208,5 +213,6 @@ public class TestApplication {
 //		notificationDB.setCount(2);
 //		notificationDB.setTimestamp(System.currentTimeMillis());
 //		applicationContext.getBean(NotificationDAO.class).updateNotification(notificationDB);
+		applicationContext.close();
 	}
 }
