@@ -9,6 +9,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.tagdish.constant.TagDishDomainConstant;
+import com.tagdish.dao.elasticsearch.DishSearchQueryDSL;
 import com.tagdish.dao.elasticsearch.ZipCodeQueryDSL;
 import com.tagdish.dao.jdbc.DishDAO;
 import com.tagdish.dao.jdbc.NotificationDAO;
@@ -193,13 +194,19 @@ public class TestApplication {
 		System.out.println(applicationContext.getBean(ZipCodeQueryDSL.class).getZipCode(90503l).getCity());
 		System.out.println(applicationContext.getBean(DishDAO.class).listDish().size());
 		
-		NotificationDB notificationDB = new NotificationDB();
-		notificationDB.setAction(TagDishDomainConstant.VIEW_DISH_DETAIL_NOTIFY_TYPE);
-		notificationDB.setData("1");
-		notificationDB.setTrasactionId("abc");
-		notificationDB.setNotificationId(1l);
-		notificationDB.setCount(2);
-		notificationDB.setTimestamp(System.currentTimeMillis());
-		applicationContext.getBean(NotificationDAO.class).updateNotification(notificationDB);
+		ArrayList<Long> zipCodeList = new ArrayList<Long>();
+		zipCodeList.add(90503l);
+		zipCodeList.add(90505l);
+		
+		System.out.println(applicationContext.getBean(DishSearchQueryDSL.class).fuzzySearchDish("Paneer", zipCodeList).get(0).getDishName());
+		
+//		NotificationDB notificationDB = new NotificationDB();
+//		notificationDB.setAction(TagDishDomainConstant.VIEW_DISH_DETAIL_NOTIFY_TYPE);
+//		notificationDB.setData("1");
+//		notificationDB.setTrasactionId("abc");
+//		notificationDB.setNotificationId(1l);
+//		notificationDB.setCount(2);
+//		notificationDB.setTimestamp(System.currentTimeMillis());
+//		applicationContext.getBean(NotificationDAO.class).updateNotification(notificationDB);
 	}
 }
