@@ -81,8 +81,8 @@ public class TestTagDishJsonBuilder {
 		
 		restaurant.setAddress(address);
 		
-		address.setStreetName("El Segundo Blvd");
-		address.setStreetNumber("2240");
+		address.setAddress1("2240 El Segundo Blvd");
+		address.setAddress2("Block A");
 		address.setCity("El Segundo");
 		address.setState("CA");
 		
