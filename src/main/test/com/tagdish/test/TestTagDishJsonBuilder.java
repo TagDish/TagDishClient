@@ -71,7 +71,7 @@ public class TestTagDishJsonBuilder {
 		restaurant.setDetail("detail");
 		restaurant.setParkingDesc("Free Parking - Street Parking - Valet Opt");
 		restaurant.setParkingFee(2.0f);
-		restaurant.setPhoneNumber(31090000000l);
+		restaurant.setPhoneNumber("31090000000");
 		restaurant.setYelpRating(2.0f);
 		
 		ArrayList<String> paymentList = new ArrayList<String>();
@@ -112,7 +112,7 @@ public class TestTagDishJsonBuilder {
 		restaurantDTO.setRestaurantId(45l);
 		restaurantDTO.setRestaurantName("Maggianos Restaurant" + 5);
 		restaurantDTO.setRestaurantType("Truck");
-		restaurantDTO.setPhoneNumber(31090000000l);
+		restaurantDTO.setPhoneNumber("31090000000");
 		restaurantDTO.setAddress(address);
 		address.setCity("El Segundo");
 		address.setState("CA");
@@ -149,7 +149,7 @@ public class TestTagDishJsonBuilder {
 			restaurantDTO.setRestaurantId((long)i);
 			restaurantDTO.setRestaurantName("Maggianos Restaurant" + i);
 			restaurantDTO.setRestaurantType("Truck");
-			restaurantDTO.setPhoneNumber(31090000000l);
+			restaurantDTO.setPhoneNumber("31090000000");
 			restaurantDTO.setAddress(address);
 			address.setCity("El Segundo");
 			address.setState("CA");
